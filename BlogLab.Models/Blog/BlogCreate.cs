@@ -18,6 +18,6 @@ namespace BlogLab.Models.Blog
         [MinLength(300, ErrorMessage = "Must be atleast 300 characters")]
         [MaxLength(3000, ErrorMessage = "Must be atmost 3000 characters")]
         public string Content { get; set; }
-        public int? Photo { get; set; }
+        public int? PhotoId { get; set; }
     }
 }
