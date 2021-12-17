@@ -84,6 +84,11 @@ namespace BlogLab.Repository
             return famousblogs.ToList();
         }
 
+        public Task<List<Blog>> GetAllFamousAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Blog> GetAsync(int blogId)
         {
             Blog blog;
