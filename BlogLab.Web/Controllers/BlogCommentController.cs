@@ -50,9 +50,9 @@ namespace BlogLab.Web.Controllers
 
             var foundBlogComment = await _blogCommentRepository.GetAsync(blogCommentId);
 
-            if (blogCommentId == null) return BadRequest("Comment does not exist");
+            if (foundBlogComment == null) return BadRequest("Comment does not exist.");
 
-            if(foundBlogComment.ApplicationUserId == applicationUserId)
+            if (foundBlogComment.ApplicationUserId == applicationUserId)
             {
                 var affectedRows = await _blogCommentRepository.DeleteAsync(blogCommentId);
 
@@ -60,7 +60,7 @@ namespace BlogLab.Web.Controllers
             }
             else
             {
-                return BadRequest("This comment was not created by the current user");
+                return BadRequest("This comment was not created by the current user.");
             }
         }
     }

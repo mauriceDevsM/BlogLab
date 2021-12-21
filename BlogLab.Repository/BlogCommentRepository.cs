@@ -22,15 +22,20 @@ namespace BlogLab.Repository
         public async Task<int> DeleteAsync(int blogCommentId)
         {
             int affectedRows = 0;
+
             using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
             {
                 await connection.OpenAsync();
 
-                affectedRows = await connection.ExecuteAsync("Blog_Comment_Delete",
-                    new { BlBlogCommentId = blogCommentId }, commandType: CommandType.StoredProcedure);
+                affectedRows = await connection.ExecuteAsync(
+                    "Blog_Comment_Delete",
+                    new { BlogCommentId = blogCommentId },
+                    commandType: CommandType.StoredProcedure);
             }
+
             return affectedRows;
         }
+
 
         public async Task<List<BlogComment>> GetAllAsync(int blogId)
         {
@@ -39,7 +44,7 @@ namespace BlogLab.Repository
             {
                 await connection.OpenAsync();
 
-                blogComments = await connection.QueryAsync<BlogComment>("BlogComment_GetAll",
+                blogComments = await connection.QueryAsync<BlogComment>("Blog_Comment_GetAll",
                     new { BlogId = blogId }, commandType: CommandType.StoredProcedure);
 
 
@@ -54,7 +59,7 @@ namespace BlogLab.Repository
             {
                 await connection.OpenAsync();
 
-                blogComments = await connection.QueryFirstOrDefaultAsync<BlogComment>("BlogComment_Get",
+                blogComments = await connection.QueryFirstOrDefaultAsync<BlogComment>("Blog_Comment_Get",
                     new { BlogCommentId = blogCommentId }, commandType: CommandType.StoredProcedure);
 
 
@@ -81,7 +86,7 @@ namespace BlogLab.Repository
             {
                 await connection.OpenAsync();
 
-                newBlogCommentId = await connection.ExecuteScalarAsync<int>("BlogComment_Upsert",
+                newBlogCommentId = await connection.ExecuteScalarAsync<int>("Blog_Comment_Upsert",
                     new { BlogComment = dataTable.AsTableValuedParameter("dbo.BlogCommentType"),
                         ApplicationUserId = applicationUserId
                     }, commandType: CommandType.StoredProcedure);

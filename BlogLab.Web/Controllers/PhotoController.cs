@@ -85,7 +85,7 @@ namespace BlogLab.Web.Controllers
 
                     if (deleteResult.Error != null) return BadRequest(deleteResult.Error.Message);
 
-                    var affectRows = await _photoRepository.DeleteAsync(foundPhoto.PhotoId);
+                    var affectRows = await _photoRepository.DeletetAsync(foundPhoto.PhotoId);
 
                     return Ok(affectRows);
                 }

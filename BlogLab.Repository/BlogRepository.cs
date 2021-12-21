@@ -84,9 +84,21 @@ namespace BlogLab.Repository
             return famousblogs.ToList();
         }
 
-        public Task<List<Blog>> GetAllFamousAsync()
+        public async Task<List<Blog>> GetAllFamousAsync()
         {
-            throw new NotImplementedException();
+            IEnumerable<Blog> famousBlogs;
+
+            using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+            {
+                await connection.OpenAsync();
+
+                famousBlogs = await connection.QueryAsync<Blog>(
+                    "Blog_GetAllFamous",
+                    new { },
+                    commandType: CommandType.StoredProcedure);
+            }
+
+            return famousBlogs.ToList();
         }
 
         public async Task<Blog> GetAsync(int blogId)
@@ -121,7 +133,7 @@ namespace BlogLab.Repository
                 await connection.OpenAsync();
 
                 newBlogId = await connection.ExecuteScalarAsync<int?>("Blog_Upsert",
-                    new { Blog = dataTable.AsTableValuedParameter("dbo.Blog_Type"), ApplicationUserId = applicationUserId },
+                    new { Blog = dataTable.AsTableValuedParameter("dbo.BlogType"), ApplicationUserId = applicationUserId },
                     commandType: CommandType.StoredProcedure);
 
             }
